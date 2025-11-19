@@ -2,5 +2,8 @@
 builder = "NIXPACKS"
 buildCommand = "composer install"
 
+[build.env]
+NIXPACKS_BUILD_PHP = "true"
+
 [deploy]
 start = "php -S 0.0.0.0:$PORT -t public"
