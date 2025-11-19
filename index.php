@@ -1,5 +1,5 @@
 <?php
-$origin = $_SERVER["HTTP_ORIGIN"] ?? "";
+require __DIR__ . "/routes/index.php";
 
 $allowed_origins = [
     "http://localhost",
