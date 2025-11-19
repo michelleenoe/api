@@ -12,6 +12,10 @@ if ($_SERVER["REQUEST_METHOD"] === "OPTIONS") {
 }
 
 require_once __DIR__ . '/../db.php';
+require __DIR__ . "/vendor/autoload.php";
+
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+$dotenv->load();
 
 // Normalize route
 $route = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);

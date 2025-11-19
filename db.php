@@ -1,19 +1,15 @@
 <?php
+$host = $_ENV["DB_HOST"] ?? getenv("DB_HOST");
+$port = $_ENV["DB_PORT"] ?? getenv("DB_PORT");
+$db   = $_ENV["DB_DATABASE"] ?? getenv("DB_DATABASE");
+$user = $_ENV["DB_USERNAME"] ?? getenv("DB_USERNAME");
+$pass = $_ENV["DB_PASSWORD"] ?? getenv("DB_PASSWORD");
 
-$url = getenv("DATABASE_URL");
-$parts = parse_url($url);
-
-$host = $parts["host"];
-$port = $parts["port"];
-$user = $parts["user"];
-$pass = $parts["pass"];
-$dbname = ltrim($parts["path"], "/");
+$dsn = "mysql:host=$host;port=$port;dbname=$db;charset=utf8mb4";
 
 $db = new PDO(
-    "mysql:host=$host;dbname=$dbname;port=$port;charset=utf8mb4",
+    $dsn,
     $user,
     $pass,
-    [
-        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
-    ]
+    [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
 );
