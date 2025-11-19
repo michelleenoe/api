@@ -10,11 +10,11 @@ for ($i = 0; $i < 20; $i++) {
     ");
 
     $stmt->execute([
-        bin2hex(random_bytes(16)),
-        $faker->userName,
-        $faker->safeEmail,
+        bin2hex(random_bytes(25)),
+        $faker->userName(),
+        $faker->safeEmail(),
         password_hash("test123", PASSWORD_DEFAULT),
-        $faker->name
+        $faker->name()
     ]);
 }
 

@@ -3,7 +3,6 @@
 global $db;
 $faker = Faker\Factory::create();
 
-// hent users til foreign key
 $users = $db->query("SELECT user_pk FROM users")->fetchAll(PDO::FETCH_COLUMN);
 
 for ($i = 0; $i < 20; $i++) {
@@ -13,7 +12,7 @@ for ($i = 0; $i < 20; $i++) {
     ");
 
     $stmt->execute([
-        bin2hex(random_bytes(16)),
+        bin2hex(random_bytes(25)),   // 50 chars
         $faker->sentence(12),
         $faker->imageUrl(400, 250),
         $faker->randomElement($users)
