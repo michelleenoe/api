@@ -1,5 +1,7 @@
 <?php
 header("Content-Type: application/json");
+
+// CORS
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type");
@@ -9,42 +11,37 @@ if ($_SERVER["REQUEST_METHOD"] === "OPTIONS") {
     exit;
 }
 
-require __DIR__ . "/db.php";
+require_once __DIR__ . '/../db.php';
 
-// Normalize route
 $route = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-$route = rtrim($route, "/");
-if ($route === "") { 
-    $route = "/"; 
-}
+$route = rtrim($route, '/');
 
-// Root
-if ($route === "/") {
-    echo json_encode(["status" => "API running"]);
-    exit;
-}
+if ($route === "") $route = "/";
 
-// /api health check
+/* ---------- ROUTES ---------- */
+
+// API root
 if ($route === "/api") {
     echo json_encode(["status" => "API OK"]);
     exit;
 }
 
-// Login
+// LOGIN
 if ($route === "/api/login" && $_SERVER["REQUEST_METHOD"] === "POST") {
-    require __DIR__ . "/routes/login.php";
+    require __DIR__ . "/../routes/login.php";
     exit;
 }
 
-// Users
+// USERS
 if ($route === "/api/users") {
-    require __DIR__ . "/routes/users.php";
+    require __DIR__ . "/../routes/users.php";
     exit;
 }
 
-// Default
+// Not found fallback
 http_response_code(404);
 echo json_encode([
     "error" => "Route not found",
     "route" => $route
 ]);
+exit;
