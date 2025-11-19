@@ -1,7 +1,6 @@
 <?php
-require __DIR__ . "/db.php";
-require __DIR__ . "/faker/autoload.php";
 
+global $db;
 $faker = Faker\Factory::create();
 
 for ($i = 0; $i < 10; $i++) {
@@ -16,4 +15,4 @@ for ($i = 0; $i < 10; $i++) {
     ]);
 }
 
-echo "10 fake persons inserted";
+echo "10 fake persons inserted\n";
