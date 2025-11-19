@@ -1,4 +1,7 @@
 FROM php:8.2-apache
+ENV PORT=8080
+RUN sed -i "s/80/${PORT}/g" /etc/apache2/ports.conf && \
+    sed -i "s/:80/:${PORT}/g" /etc/apache2/sites-available/000-default.conf
 
 RUN apt-get update && apt-get install -y \
     git \
