@@ -1,5 +1,4 @@
 <?php
-
 $origin = $_SERVER["HTTP_ORIGIN"] ?? "";
 
 $allowed_origins = [
