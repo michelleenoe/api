@@ -1,27 +1,12 @@
 <?php
-header("Content-Type: application/json");
+$input = json_decode(file_get_contents("php://input"), true);
 
-require __DIR__ . "/db.php";
-
-// Read input (JSON OR form-urlencoded)
-$raw = file_get_contents("php://input");
-
-if (strpos($_SERVER["CONTENT_TYPE"] ?? "", "application/json") !== false) {
-    $input = json_decode($raw, true);
-} else {
-    $input = $_POST;
-}
-
-$email = $input["e"] ?? null;
-$password = $input["p"] ?? null;
-var_dump("RAW INPUT:", $input);
-var_dump("EMAIL:", $email);
-var_dump("PASSWORD:", $password);
-exit;
+$email = $input["email"] ?? null;
+$password = $input["password"] ?? null;
 
 if (!$email || !$password) {
     http_response_code(400);
-    echo json_encode(["error" => "Missing credentials"]);
+    echo json_encode(["error" => "missing_credentials"]);
     exit;
 }
 
@@ -30,18 +15,27 @@ $stmt = $db->prepare("
     FROM users
     WHERE user_email = :email
 ");
-
 $stmt->bindValue(":email", strtolower($email));
 $stmt->execute();
 
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-if (!$user || !password_verify($password, $user["user_password"])) {
+if (!$user) {
     http_response_code(401);
-    echo json_encode(["error" => "Invalid"]);
+    echo json_encode(["error" => "invalid_login"]);
+    exit;
+}
+
+if (!password_verify($password, $user["user_password"])) {
+    http_response_code(401);
+    echo json_encode(["error" => "invalid_login"]);
     exit;
 }
 
 unset($user["user_password"]);
-echo json_encode($user);
+
+echo json_encode([
+    "success" => true,
+    "user" => $user
+]);
 exit;
